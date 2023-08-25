@@ -1,0 +1,53 @@
+import os
+import cv2
+import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+sargazoDir = "..\..\Imagenes\ConSargazo"
+sinSargazoDir = "..\..\Imagenes\SinSargazo"
+
+inputShape = (224, 224, 3)
+
+def cargarImagenesEtiquetas(dir, etiqueta):
+    imagenes = []
+    etiquetas = []
+    i = 0
+    for filename in os.listdir(dir):
+        if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
+            print( filename, i)
+            img = cv2.imread(os.path.join(dir, filename))
+            img = cv2.resize(img, (inputShape[0], inputShape[1]))
+            imagenes.append(img)
+            etiquetas.append(etiqueta)
+            i=i+1
+    return np.array(imagenes), np.array(etiquetas)
+
+imagenesSargazo, etiquetasSargazo = cargarImagenesEtiquetas(sargazoDir, 1)
+imagenesSinSargazo, etiquetasSinSargazo = cargarImagenesEtiquetas(sinSargazoDir, 0)
+
+imagenes = np.concatenate([imagenesSargazo, imagenesSinSargazo])
+etiquetas = np.concatenate([etiquetasSargazo, etiquetasSinSargazo])
+
+imagenes = imagenes.astype('float32') / 255.0
+
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=inputShape))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(1, activation='sigmoid'))
+
+model.compile(optimizer=Adam(learning_rate=0.0001), loss='binary_crossentropy', metrics=['accuracy'])
+
+model.fit(imagenes, etiquetas, batch_size=32, epochs=10)
+
+model.save('modelo_sargazo.keras') 
+
