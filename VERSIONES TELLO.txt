@@ -1,0 +1,131 @@
+import os
+import cv2
+import time
+from djitellopy import Tello
+
+# Ruta donde deseas guardar las fotos
+ruta_guardado = "C:/tello_fotos/"
+
+# Conecta con el dron
+tello = Tello()
+tello.connect()
+
+# Activa la transmisión de video
+tello.streamon()
+frame_read = tello.get_frame_read()
+
+# Inicia el despegue
+tello.takeoff()
+
+# Alturas a las que tomarás las fotos
+alturas = [50, 100, 150]  # en centímetros
+
+# Toma fotos a diferentes alturas
+for idx, altura in enumerate(alturas):
+    # Cambia la altura del dron
+    tello.move_up(altura - tello.get_height())
+
+    # Espera a que el dron alcance la altura deseada
+    while abs(tello.get_height() - altura) > 10:
+        time.sleep(0.1)  # Espera en incrementos pequeños para no bloquear el bucle
+
+    # Captura la imagen y guárdala con un nombre único
+    nombre_foto = f"foto_altura_{altura}cm.png"
+    ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+    cv2.imwrite(ruta_foto, frame_read.frame)
+
+# Aterriza el dron
+tello.land()
+
+# Detén la transmisión de video
+tello.streamoff()
+
+_______________________________
+
+import os
+import cv2
+import time
+from djitellopy import Tello
+
+# Ruta donde deseas guardar las fotos
+ruta_guardado = "C:/tello_fotos/"
+
+# Conecta con el dron
+tello = Tello()
+tello.connect()
+
+# Activa la transmisión de video
+tello.streamon()
+frame_read = tello.get_frame_read()
+
+# Inicia el despegue
+tello.takeoff()
+
+# Alturas a las que tomarás las fotos
+alturas = [100, 150, 200]  # en centímetros
+
+# Toma fotos a diferentes alturas
+for idx, altura in enumerate(alturas):
+    # Cambia la altura del dron
+    tello.move_up(altura - tello.get_height())
+
+    # Espera a que el dron alcance la altura deseada
+    while abs(tello.get_height() - altura) > 10:
+        time.sleep(0.1)  # Espera en incrementos pequeños para no bloquear el bucle
+
+    # Captura la imagen y guárdala con un nombre único
+    frame = tello.get_frame_read().frame
+    nombre_foto = f"foto_altura_{altura}cm.png"
+    ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+    cv2.imwrite(ruta_foto, frame)
+
+# Aterriza el dron
+tello.land()
+
+# Detén la transmisión de video
+tello.streamoff()
+
+______________________________________________
+
+import os
+import cv2
+import time
+from djitellopy import Tello
+
+# Ruta donde deseas guardar las fotos
+ruta_guardado = "//GQSERVER/Sargadrone/Imagenes/Deteccion"
+
+# Conecta con el dron
+tello = Tello()
+tello.connect()
+
+# Activa la transmisión de video
+tello.streamon()
+frame_read = tello.get_frame_read()
+
+# Inicia el despegue
+tello.takeoff()
+
+# Alturas a las que tomarás las fotos
+alturas = [100, 150, 200]  # en centímetros
+
+# Toma fotos a diferentes alturas
+for idx, altura in enumerate(alturas):
+    # Cambia la altura del dron
+    tello.move_up(altura - tello.get_height())
+
+    # Espera a que el dron alcance la altura deseada
+    while abs(tello.get_height() - altura) > 10:
+        time.sleep(0.1)  # Espera en incrementos pequeños para no bloquear el bucle
+
+    # Captura la imagen y guárdala con un nombre único
+    frame = tello.get_frame_read().frame
+    nombre_foto = f"foto_{altura}.png"
+    ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+    cv2.imwrite(ruta_foto, frame)
+
+# Aterriza el dron
+tello.land()
+
+# Detén la transmisión de video
+tello.streamoff()
