@@ -1,0 +1,31 @@
+import os
+import cv2
+import numpy as np
+import datetime
+import mysql.connector
+# ... (el resto de tu código) ...
+
+# Obtiene la fecha actual sin la hora
+fecha_actual = datetime.datetime.now().date()
+
+# ... (el resto de tu código) ...
+
+# Insertar datos en la tabla 'imagenes'
+fecha_actual_str = fecha_actual.strftime('%Y-%m-%d')
+playa_id = 1  # Cambia esto según la playa correspondiente en tu base de datos
+
+# Verifica si ya existe un registro con la misma fecha en la base de datos
+check_query = "SELECT * FROM imagenes WHERE id_playa = %s AND DATE(fecha) = %s"
+cursor.execute(check_query, (playa_id, fecha_actual_str))
+existing_data = cursor.fetchall()
+
+if not existing_data:  # Si no hay registros para la fecha actual, inserta uno nuevo
+    insert_query = "INSERT INTO imagenes (id_playa, nombre, fecha) VALUES (%s, %s, %s)"
+    insert_data = (playa_id, nombre_foto, fecha_actual_str)
+    cursor.execute(insert_query, insert_data)
+    db.commit()
+    print("Registro insertado en la base de datos.")
+else:
+    print("Ya existe un registro en la base de datos para la fecha actual.")
+
+# ... (el resto de tu código) ...

@@ -1,0 +1,21 @@
+import sqlite3
+
+# Crear una conexión a la base de datos (o establecer conexión a tu base de datos MySQL/PostgreSQL)
+conn = sqlite3.connect('database.db')  # Cambia 'database.db' al nombre de tu archivo de base de datos
+
+# Crear un cursor
+cursor = conn.cursor()
+
+# Datos para la inserción
+nombre = 'John'
+apellido = 'Doe'
+edad = 30
+
+# Realizar el insert en la tabla "usuarios"
+cursor.execute("INSERT INTO usuarios (nombre, apellido, edad) VALUES (?, ?, ?)", (nombre, apellido, edad))
+
+# Guardar los cambios
+conn.commit()
+
+# Cerrar la conexión
+conn.close()

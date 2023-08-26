@@ -1,0 +1,3 @@
+fecha_actual = time.strftime('%Y-%m-%d')
+ruta_guardado = os.path.join("//GQSERVER/Sargadrone/Imagenes/Deteccion", fecha_actual)
+os.makedirs(ruta_guardado, exist_ok=True)

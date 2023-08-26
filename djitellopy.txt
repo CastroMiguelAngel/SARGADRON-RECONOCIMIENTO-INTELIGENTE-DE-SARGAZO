@@ -1,0 +1,14 @@
+# Toma fotos a diferentes alturas
+for idx, altura in enumerate(alturas):
+    # Cambia la altura del dron
+    tello.move_up(altura - tello.get_height())
+
+    # Espera a que el dron alcance la altura deseada
+    while abs(tello.get_height() - altura) > 10:
+        time.sleep(0.1)  # Espera en incrementos pequeños para no bloquear el bucle
+
+    # Captura la imagen y guárdala con un nombre único
+    frame = tello.get_frame_read().frame
+    nombre_foto = f"foto_altura_{altura}cm.png"
+    ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+    cv2.imwrite(ruta_foto, frame)

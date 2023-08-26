@@ -1,0 +1,30 @@
+import os
+import cv2
+import time
+import mysql.connector
+from djitellopy import Tello
+import socket
+
+def main():
+    # ... (resto del código)
+
+    # Ruta donde deseas guardar las fotos
+    fecha_actual = time.strftime('%Y-%m-%d')
+    ruta_guardado = os.path.join("//GQSERVER/Sargadrone/Imagenes/Deteccion", fecha_actual)
+    os.makedirs(ruta_guardado, exist_ok=True)
+
+    # ... (resto del código)
+
+    for idx, altura in enumerate(alturas):
+        # ... (resto del código)
+
+        ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+        cv2.imwrite(ruta_foto, frame)
+
+        # ... (resto del código)
+
+    # ... (resto del código)
+
+if __name__ == '__main__':
+    main()
+

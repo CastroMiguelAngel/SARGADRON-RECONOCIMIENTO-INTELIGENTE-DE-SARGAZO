@@ -1,0 +1,32 @@
+import mysql.connector
+
+# Configura la conexión a la base de datos
+conexion = mysql.connector.connect(
+    host="localhost",
+    user="tu_usuario",
+    password="tu_contraseña",
+    database="tu_base_de_datos"
+)
+
+# Crear un cursor
+cursor = conexion.cursor()
+
+# Definir los valores que deseas insertar (como variables)
+nombre = 'Ejemplo'
+edad = 25
+email = 'ejemplo@email.com'
+
+# Ejecutar la consulta INSERT con parámetros de marcadores de posición (%s)
+consulta = "INSERT INTO usuarios (nombre, edad, email) VALUES (%s, %s, %s)"
+valores = (nombre, edad, email)
+
+try:
+    cursor.execute(consulta, valores)
+    conexion.commit()  # Confirmar la transacción
+    print("Inserción exitosa")
+except mysql.connector.Error as error:
+    print("Error al insertar:", error)
+    conexion.rollback()  # Revertir la transacción en caso de error
+finally:
+    cursor.close()     # Cerrar el cursor
+    conexion.close()   # Cerrar la conexión

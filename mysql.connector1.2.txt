@@ -1,0 +1,34 @@
+import mysql.connector
+
+# Configura la conexión a la base de datos
+conexion = mysql.connector.connect(
+    host="localhost",
+    user="tu_usuario",
+    password="tu_contraseña",
+    database="tu_base_de_datos"
+)
+
+if conexion.is_connected():
+    print("Conexión exitosa a la base de datos")
+
+# Crear un cursor
+cursor = conexion.cursor()
+
+# Definir los valores que deseas insertar (como variables)
+si_valor = True  # Cambia este valor según corresponda
+no_valor = False  # Cambia este valor según corresponda
+
+# Ejecutar la consulta INSERT con parámetros de marcadores de posición (%s)
+consulta = "INSERT INTO prueba (si, no) VALUES (%s, %s)"
+valores = (si_valor, no_valor)
+
+try:
+    cursor.execute(consulta, valores)
+    conexion.commit()  # Confirmar la transacción
+    print("Inserción exitosa")
+except mysql.connector.Error as error:
+    print("Error al insertar:", error)
+    conexion.rollback()  # Revertir la transacción en caso de error
+finally:
+    cursor.close()     # Cerrar el cursor
+    conexion.close()   # Cerrar la conexión

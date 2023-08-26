@@ -1,0 +1,35 @@
+import os
+import cv2
+import time
+from djitellopy import Tello
+
+# Ruta donde deseas guardar las fotos
+ruta_guardado = "//GQSERVER/Sargadrone/Imagenes/Deteccion"
+
+# Conecta con el dron
+tello = Tello()
+tello.connect()
+
+# Activa la transmisión de video
+tello.streamon()
+frame_read = tello.get_frame_read()
+tello.set_video_resolution(tello.VIDEO_RESOLUTION_LOW)
+# Inicia el despegue
+tello.takeoff()
+
+# Toma fotos cada 2 segundos
+for idx in range(3):  # Cambia este valor si deseas tomar más o menos fotos
+    # Espera 2 segundos
+    time.sleep(2)
+    
+    # Captura la imagen y guárdala con un nombre único
+    nombre_foto = f"foto_{idx + 1}.png"
+    ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+    cv2.imwrite(ruta_foto, frame_read.frame)
+    print(ruta_foto)
+
+# Aterriza el dron
+tello.land()
+
+# Detén la transmisión de video
+tello.streamoff()

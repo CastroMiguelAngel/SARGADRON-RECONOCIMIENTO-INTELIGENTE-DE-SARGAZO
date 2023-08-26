@@ -1,0 +1,20 @@
+from datetime import datetime
+
+# ... (resto del código)
+
+for imagen in listaImagenes:
+    # ... (resto del código)
+
+    # Obtener la fecha de hoy en el formato 'YYYY-MM-DD'
+    fecha_hoy = datetime.now().strftime('%Y-%m-%d')
+
+    # Actualizar la columna 'sargazo' en la base de datos
+    try:
+        update_query = "UPDATE imagenes SET sargazo = %s WHERE nombre = %s AND DATE(fecha) = %s"
+        update_values = (sargazo_valor, imagen, fecha_hoy)
+        cursor.execute(update_query, update_values)
+        conexion.commit()
+        print(f"Actualización exitosa para {imagen}")
+    except mysql.connector.Error as error:
+        print(f"Error al actualizar {imagen}:", error)
+        conexion.rollback()

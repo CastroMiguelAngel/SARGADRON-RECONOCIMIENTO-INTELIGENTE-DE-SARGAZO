@@ -1,0 +1,16 @@
+import socket
+
+def main():
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('127.0.0.1', 12345))
+    
+    # Aquí va tu código de procesamiento
+    
+    # Una vez completado el procesamiento, envía la señal al servidor
+    client_socket.send("ProcesamientoCompletado".encode())
+    print("Señal de procesamiento completado enviada.")
+    
+    client_socket.close()
+
+if __name__ == '__main__':
+    main()

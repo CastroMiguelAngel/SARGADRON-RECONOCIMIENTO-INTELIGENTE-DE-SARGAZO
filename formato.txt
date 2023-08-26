@@ -1,0 +1,19 @@
+# Captura la imagen y guárdala con un nombre único
+frame = tello.get_frame_read().frame
+nombre_foto = f"foto_{altura}.png"  # Cambia la extensión aquí si es diferente
+ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+cv2.imwrite(ruta_foto, frame)
+
+# Obtén el nombre sin la extensión
+nombre_sin_extension = f"foto_{altura}"
+
+# Insertar datos en la tabla 'imagenes'
+fecha_actual = time.strftime('%Y-%m-%d %H:%M:%S')
+extension = "png"  # Cambia esto según el formato real de tus imágenes
+playa_id = 1  # Cambia esto según la playa correspondiente en tu base de datos
+
+insert_query = "INSERT INTO imagenes (id_playa, nombre, extension, fecha) VALUES (%s, %s, %s, %s)"
+insert_data = (playa_id, nombre_sin_extension, extension, fecha_actual)
+
+cursor.execute(insert_query, insert_data)
+db.commit()

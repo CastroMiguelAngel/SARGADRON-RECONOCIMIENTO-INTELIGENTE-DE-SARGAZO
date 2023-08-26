@@ -1,0 +1,24 @@
+import sqlite3
+
+# Conectar a la base de datos (creará el archivo si no existe)
+conexion = sqlite3.connect('mi_base_de_datos.db')
+cursor = conexion.cursor()
+
+# Definir los valores que deseas insertar (como variables)
+nombre = 'Ejemplo'
+edad = 25
+email = 'ejemplo@email.com'
+
+# Ejecutar la consulta INSERT con parámetros de marcadores de posición (?)
+consulta = "INSERT INTO usuarios (nombre, edad, email) VALUES (?, ?, ?)"
+valores = (nombre, edad, email)
+
+try:
+    cursor.execute(consulta, valores)
+    conexion.commit()  # Confirmar la transacción
+    print("Inserción exitosa")
+except sqlite3.Error as error:
+    print("Error al insertar:", error)
+    conexion.rollback()  # Revertir la transacción en caso de error
+finally:
+    conexion.close()  # Cerrar la conexión

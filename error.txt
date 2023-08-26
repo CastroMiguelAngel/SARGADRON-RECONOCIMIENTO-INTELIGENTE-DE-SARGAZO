@@ -1,0 +1,2 @@
+model = load_model('/ruta/completa/al/directorio/modelo_sargazo.keras')
+

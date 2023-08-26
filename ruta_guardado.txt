@@ -1,0 +1,51 @@
+import os
+import time
+import cv2
+import mysql.connector
+
+# Conexión a la base de datos MySQL
+db = mysql.connector.connect(
+    host="localhost",
+    user="tu_usuario",
+    password="tu_contraseña",
+    database="sargadrone"
+)
+cursor = db.cursor()
+
+alturas = [1, 2, 3]  # Ejemplo de alturas para capturar imágenes
+ruta_guardado = "ruta/donde/guardar/imagenes"  # Cambia a la ruta adecuada
+
+# Toma fotos a diferentes alturas
+for idx, altura in enumerate(alturas):
+    # Cambia la altura del dron
+    tello.move_up(altura - tello.get_height())
+
+    # Espera a que el dron alcance la altura deseada
+    while abs(tello.get_height() - altura) > 10:
+        time.sleep(0.1)  # Espera en incrementos pequeños para no bloquear el bucle
+
+    # Captura la imagen y guárdala con un nombre único
+    frame = tello.get_frame_read().frame
+    nombre_foto = f"foto_{altura}.png"
+    ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+    cv2.imwrite(ruta_foto, frame)
+
+    # Insertar datos en la tabla 'imagenes'
+    fecha_actual = time.strftime('%Y-%m-%d %H:%M:%S')
+    extension = "png"  # Cambia esto según el formato real de tus imágenes
+    playa_id = 1  # Cambia esto según la playa correspondiente en tu base de datos
+
+    insert_query = "INSERT INTO imagenes (id_playa, nombre, extension, fecha) VALUES (%s, %s, %s, %s)"
+    insert_data = (playa_id, nombre_foto, extension, fecha_actual)
+
+    cursor.execute(insert_query, insert_data)
+    db.commit()
+
+# Aterriza el dron
+tello.land()
+
+# Detén la transmisión de video
+tello.streamoff()
+
+# Cerrar la conexión a la base de datos
+db.close()

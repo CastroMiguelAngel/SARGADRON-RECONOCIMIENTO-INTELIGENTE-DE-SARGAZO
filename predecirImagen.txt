@@ -1,0 +1,21 @@
+import cv2
+import numpy as np
+from tensorflow.keras.models import load_model
+
+rutaImagenesPrediccion = ['imagen1.jpg', 'imagen2.jpg', 'imagen3.jpg']  # Agrega aquí las rutas de tus imágenes
+inputShape = (224, 224, 3)
+model = load_model('modelo_sargazo.keras')
+
+def predecirImagenes(rutasImagenes):
+    for rutaImagen in rutasImagenes:
+        img = cv2.imread(rutaImagen)
+        img = cv2.resize(img, (inputShape[0], inputShape[1]))
+        img = np.expand_dims(img, axis=0)
+        img = img.astype('float32') / 255.0
+        prediccion = model.predict(img)
+        if prediccion[0][0] >= 0.5:
+            print(f"La imagen {rutaImagen} contiene sargazo.")
+        else:
+            print(f"La imagen {rutaImagen} no contiene sargazo.")
+
+predecirImagenes(rutaImagenesPrediccion)

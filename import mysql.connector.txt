@@ -1,0 +1,32 @@
+import mysql.connector
+
+# Configuración de la conexión a la base de datos
+config = {
+    'user': 'tu_usuario',
+    'password': 'tu_contraseña',
+    'host': 'localhost',
+    'database': 'nombre_base_de_datos'
+}
+
+# Crear una conexión a la base de datos
+conn = mysql.connector.connect(**config)
+
+# Crear un cursor
+cursor = conn.cursor()
+
+# Datos para la inserción
+nombre = 'John'
+apellido = 'Doe'
+edad = 30
+
+# Realizar el insert en la tabla "usuarios"
+sql_insert = "INSERT INTO usuarios (nombre, apellido, edad) VALUES (%s, %s, %s)"
+values = (nombre, apellido, edad)
+cursor.execute(sql_insert, values)
+
+# Hacer commit para guardar los cambios
+conn.commit()
+
+# Cerrar el cursor y la conexión
+cursor.close()
+conn.close()

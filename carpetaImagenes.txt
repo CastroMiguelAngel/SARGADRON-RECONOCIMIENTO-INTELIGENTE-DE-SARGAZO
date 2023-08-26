@@ -1,0 +1,3 @@
+carpetaImagenes = os.path.join('..', '..', 'Imagenes', 'Deteccion', anio, mes, dia)
+carpetaImagenes = carpetaImagenes.replace('\\', '/')  # Reemplazar barras invertidas por barras inclinadas
+

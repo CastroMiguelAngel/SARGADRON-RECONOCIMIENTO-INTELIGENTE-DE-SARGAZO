@@ -1,0 +1,33 @@
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# Definir la base para las clases ORM
+Base = declarative_base()
+
+# Definir la clase ORM para la tabla "almacenes"
+class Almacenes(Base):
+    __tablename__ = 'almacenes'
+
+    id = Column(Integer, primary_key=True)
+    descripcion = Column(String)
+    ubicacion = Column(String)
+    idproductos = Column(Integer)
+    identidad = Column(Integer)
+
+# Crear el motor de base de datos y la sesión
+engine = create_engine('mysql://usuario:contraseña@localhost/nombre_base_de_datos', echo=True)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Crear una instancia de la clase Almacenes
+nuevo_almacen = Almacenes(descripcion='Almacen A', ubicacion='Ubicacion A', idproductos=1, identidad=1)
+
+# Agregar el nuevo almacén a la sesión
+session.add(nuevo_almacen)
+
+# Hacer commit para guardar los cambios en la base de datos
+session.commit()
+
+# Cerrar la sesión
+session.close()

@@ -1,0 +1,21 @@
+import os
+import cv2
+import time
+import mysql.connector
+from djitellopy import Tello
+import socket
+import socket
+import datetime  # Agrega esta importación
+# ... (el resto de tu código) ...
+
+def main():
+    # ... (el resto de tu código) ...
+
+    for idx, altura in enumerate(alturas):
+        # ... (el resto de tu código) ...
+
+        # Crea la ruta completa para guardar la imagen en la carpeta de la fecha actual
+        ruta_foto = os.path.join(ruta_guardado, nombre_foto)
+
+        # ... (el resto de tu código) ...
+

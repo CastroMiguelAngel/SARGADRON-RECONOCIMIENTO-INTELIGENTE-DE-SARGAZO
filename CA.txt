@@ -1,0 +1,17 @@
+import os
+import cv2
+import numpy as np
+import datetime  # Agrega esta importación
+# ... (el resto de tu código) ...
+
+# Obtiene la fecha actual
+fecha_actual = datetime.datetime.now()
+carpeta_fecha = fecha_actual.strftime("%Y/%m/%d")
+
+# Crea la ruta completa para guardar las imágenes
+ruta_guardado = os.path.join("..", "..", "Imagenes", "Deteccion", carpeta_fecha)
+
+# Crea la carpeta si no existe
+os.makedirs(ruta_guardado, exist_ok=True)
+
+# ... (el resto de tu código) ...

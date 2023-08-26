@@ -1,0 +1,35 @@
+import os
+import cv2
+import numpy as np
+from tensorflow.keras.models import load_model
+import mysql.connector
+import socket
+import time
+from datetime import datetime
+
+def main():
+    while True:  # Bucle infinito para mantener el servidor a la escucha
+        try:
+            server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server_socket.bind(('10.147.17.1', 12345))
+            server_socket.listen(1)
+            
+            print("Esperando conexión del cliente...")
+            client_socket, client_address = server_socket.accept()
+            print("Cliente conectado desde:", client_address)
+            
+            data = client_socket.recv(1024)
+            if data.decode() == "ProcesamientoCompletado":
+                print("Señal de procesamiento completado recibida.")
+
+            # Resto de tu código de procesamiento aquí...
+
+            client_socket.close()
+            server_socket.close()
+        except Exception as e:
+            print("Ocurrió un error:", e)
+            time.sleep(1)  # Pausa para evitar ciclos rápidos en caso de errores
+
+if __name__ == '__main__':
+    main()
+

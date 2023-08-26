@@ -1,0 +1,26 @@
+import os
+import cv2
+import numpy as np
+from tensorflow.keras.models import load_model
+
+carpetaImagenes = 'ruta_de_tu_carpeta_de_imagenes'  # Cambia esto a la ruta de tu carpeta
+inputShape = (224, 224, 3)
+model = load_model('modelo_sargazo.keras')
+
+def predecirImagenesEnCarpeta(carpeta):
+    listaImagenes = [imagen for imagen in os.listdir(carpeta) if imagen.endswith('.jpg')]
+    
+    for imagen in listaImagenes:
+        rutaImagen = os.path.join(carpeta, imagen)
+        img = cv2.imread(rutaImagen)
+        img = cv2.resize(img, (inputShape[0], inputShape[1]))
+        img = np.expand_dims(img, axis=0)
+        img = img.astype('float32') / 255.0
+        prediccion = model.predict(img)
+        
+        if prediccion[0][0] >= 0.5:
+            print(f"La imagen {imagen} en la carpeta {carpeta} contiene sargazo.")
+        else:
+            print(f"La imagen {imagen} en la carpeta {carpeta} no contiene sargazo.")
+
+predecirImagenesEnCarpeta(carpetaImagenes)
